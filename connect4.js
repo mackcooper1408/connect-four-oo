@@ -4,15 +4,24 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
-let currPlayer = 1; // active player: 1 or 2
+
+class Player {
+  constructor(playerNum, color) {
+    this.color = color;
+    this.playerNum = playerNum;
+  }
+}
 
 class Game {
 
-  constructor(height, width) {
+  constructor(height, width, player1, player2) {
     this.board = []; // array of rows, each row is array of cells  (board[y][x])
     this.height = height;
     this.width = width;
     this.startButton = document.querySelector("#start-button");
+    this.player1 = player1;
+    this.player2 = player2;
+    this.currPlayer = this.player1.color;
   }
 
 
@@ -74,7 +83,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${currPlayer}`);
+    piece.style.backgroundColor = this.currPlayer;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`${y}-${x}`);
@@ -85,6 +94,10 @@ class Game {
 
   endGame(msg) {
     alert(msg);
+    this.startButton.innerHTML = "RESTART"
+    this.startButton.style.display = "block"
+    document.querySelector("#column-top").classList.add("no-click")
+    // this.startButton.classList.remove("no-click");
   }
 
   /** handleClick: handle click of column top to play piece */
@@ -100,12 +113,12 @@ class Game {
     }
 
     // place piece in board and add to HTML table
-    this.board[y][x] = currPlayer;
+    this.board[y][x] = this.currPlayer;
     this.placeInTable(y, x);
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${currPlayer} won!`);
+      return this.endGame(`${this.currPlayer} wins!`);
     }
 
     // check for tie
@@ -114,13 +127,13 @@ class Game {
     }
 
     // switch players
-    currPlayer = currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer === this.player1.color ? this.player2.color : this.player1.color;
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
-    function _win(cells, height, width, board) {
+    function _win(cells, height, width, board, currPlayer) {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
@@ -146,10 +159,10 @@ class Game {
 
         // find winner (only checking each win-possibility as needed)
         if (
-          _win(horiz, this.height, this.width, this.board) ||
-          _win(vert, this.height, this.width, this.board) ||
-          _win(diagDR, this.height, this.width, this.board) ||
-          _win(diagDL, this.height, this.width, this.board)
+          _win(horiz, this.height, this.width, this.board, this.currPlayer) ||
+          _win(vert, this.height, this.width, this.board, this.currPlayer) ||
+          _win(diagDR, this.height, this.width, this.board, this.currPlayer) ||
+          _win(diagDL, this.height, this.width, this.board, this.currPlayer)
         ) { return true; }
       }
     }
@@ -159,14 +172,24 @@ class Game {
     this.startButton.addEventListener("click", this.startGame.bind(this))
   }
   
-  startGame(evt) {
-    this.startButton.classList.add("no-click");  // ask why I can't remove event listener..
+  startGame() {
+    // this.startButton.classList.add("no-click");  // ask why I can't remove event listener..
+    this.startButton.style.display = "none"
+    this.clearBoard();
     this.makeBoard();
     this.makeHtmlBoard();
-    console.log(this)
   }
+  
+  clearBoard() {
+    this.board = [];
+    document.querySelector("#board").innerHTML = ""
+  }
+
 }
 
-let myGame = new Game(6, 7);
+let player1 = new Player(1, "orange");
+let player2 = new Player(2, "green");
+let myGame = new Game(6, 7, player1, player2);
+
 
 myGame.setGame();
