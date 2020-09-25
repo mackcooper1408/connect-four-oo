@@ -28,7 +28,7 @@ class Game {
   /** makeHtmlBoard: make HTML table and row of column tops. */
 
   makeHtmlBoard() {
-    const board = document.getElementById('board');
+    const HTML_BOARD = document.getElementById('board');
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
@@ -41,9 +41,9 @@ class Game {
       top.append(headCell);
     }
 
-    board.append(top);
+    HTML_BOARD.append(top);
 
-    // make main part of board
+    // make main part of HTML_BOARD
     for (let y = 0; y < this.height; y++) {
       const row = document.createElement('tr');
 
@@ -53,7 +53,7 @@ class Game {
         row.append(cell);
       }
 
-      board.append(row);
+      HTML_BOARD.append(row);
     }
   }
 
