@@ -12,6 +12,7 @@ class Game {
     this.board = []; // array of rows, each row is array of cells  (board[y][x])
     this.height = height;
     this.width = width;
+    this.startButton = document.querySelector("#start-button");
   }
 
 
@@ -153,9 +154,19 @@ class Game {
       }
     }
   }
+  
+  setGame() {
+    this.startButton.addEventListener("click", this.startGame.bind(this))
+  }
+  
+  startGame(evt) {
+    this.startButton.classList.add("no-click");  // ask why I can't remove event listener..
+    this.makeBoard();
+    this.makeHtmlBoard();
+    console.log(this)
+  }
 }
 
 let myGame = new Game(6, 7);
 
-myGame.makeBoard();
-myGame.makeHtmlBoard();
+myGame.setGame();

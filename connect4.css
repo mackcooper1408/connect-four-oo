@@ -1,3 +1,27 @@
+.no-click {
+  pointer-events: none;
+}
+
+body {
+  font-size: 30px;
+}
+
+header,
+#start-button {
+  margin: 10px auto;
+  padding: 2px 0;
+  text-align: center;
+}
+
+#start-button {
+  border: 3px solid black;
+  border-radius: 5px;
+  width: 20%;
+  background-color: rgb(165, 103, 22, 80%);
+  cursor: pointer;
+}
+
+
 /* game board table */
 
 #board {
@@ -31,6 +55,7 @@
 
 #column-top td {
   border: dashed 1px lightgray;
+  cursor: pointer;
 }
 
 #column-top td:hover {
