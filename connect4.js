@@ -18,6 +18,7 @@ class Game {
     this.board = []; // array of rows, each row is array of cells  (board[y][x])
     this.height = height;
     this.width = width;
+    this.form = document.querySelector("#form");
     this.startButton = document.querySelector("#start-button");
     this.player1 = player1;
     this.player2 = player2;
@@ -95,7 +96,7 @@ class Game {
   endGame(msg) {
     alert(msg);
     this.startButton.innerHTML = "RESTART"
-    this.startButton.style.display = "block"
+    this.form.style.display = "flex"
     document.querySelector("#column-top").classList.add("no-click")
     // this.startButton.classList.remove("no-click");
   }
@@ -173,11 +174,19 @@ class Game {
   }
   
   startGame() {
+    if (!document.querySelector("#player1").value || !document.querySelector("#player2").value) {
+      return;
+    }
     // this.startButton.classList.add("no-click");  // ask why I can't remove event listener..
-    this.startButton.style.display = "none"
+    this.form.style.display = "none"
+    this.player1.color = document.querySelector("#player1").value;
+    this.player2.color = document.querySelector("#player2").value;
+    this.currPlayer = this.player1.color;
+    // console.log(this.player1.color, this.player2.color)
     this.clearBoard();
     this.makeBoard();
     this.makeHtmlBoard();
+    this.form.reset();
   }
   
   clearBoard() {
@@ -187,8 +196,8 @@ class Game {
 
 }
 
-let player1 = new Player(1, "orange");
-let player2 = new Player(2, "green");
+let player1 = new Player(1, "red");
+let player2 = new Player(2, "blue");
 let myGame = new Game(6, 7, player1, player2);
 
 

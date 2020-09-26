@@ -14,6 +14,12 @@ header,
   text-align: center;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  font-size: .6em;
+}
+
 #start-button {
   border: 3px solid black;
   border-radius: 5px;
